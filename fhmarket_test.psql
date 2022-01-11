@@ -1,0 +1,279 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 12.7
+-- Dumped by pg_dump version 12.7
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: alembic_version; Type: TABLE; Schema: public; Owner: vari
+--
+
+CREATE TABLE public.alembic_version (
+    version_num character varying(32) NOT NULL
+);
+
+
+ALTER TABLE public.alembic_version OWNER TO vari;
+
+--
+-- Name: buyers; Type: TABLE; Schema: public; Owner: vari
+--
+
+CREATE TABLE public.buyers (
+    id integer NOT NULL,
+    name character varying,
+    comercialized_products character varying[]
+);
+
+
+ALTER TABLE public.buyers OWNER TO vari;
+
+--
+-- Name: buyers_id_seq; Type: SEQUENCE; Schema: public; Owner: vari
+--
+
+CREATE SEQUENCE public.buyers_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.buyers_id_seq OWNER TO vari;
+
+--
+-- Name: buyers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vari
+--
+
+ALTER SEQUENCE public.buyers_id_seq OWNED BY public.buyers.id;
+
+
+--
+-- Name: producers; Type: TABLE; Schema: public; Owner: vari
+--
+
+CREATE TABLE public.producers (
+    id integer NOT NULL,
+    name character varying,
+    country character varying,
+    products character varying[]
+);
+
+
+ALTER TABLE public.producers OWNER TO vari;
+
+--
+-- Name: producers_id_seq; Type: SEQUENCE; Schema: public; Owner: vari
+--
+
+CREATE SEQUENCE public.producers_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.producers_id_seq OWNER TO vari;
+
+--
+-- Name: producers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vari
+--
+
+ALTER SEQUENCE public.producers_id_seq OWNED BY public.producers.id;
+
+
+--
+-- Name: sales; Type: TABLE; Schema: public; Owner: vari
+--
+
+CREATE TABLE public.sales (
+    id integer NOT NULL,
+    producer_id integer,
+    buyer_id integer
+);
+
+
+ALTER TABLE public.sales OWNER TO vari;
+
+--
+-- Name: sales_id_seq; Type: SEQUENCE; Schema: public; Owner: vari
+--
+
+CREATE SEQUENCE public.sales_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.sales_id_seq OWNER TO vari;
+
+--
+-- Name: sales_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vari
+--
+
+ALTER SEQUENCE public.sales_id_seq OWNED BY public.sales.id;
+
+
+--
+-- Name: buyers id; Type: DEFAULT; Schema: public; Owner: vari
+--
+
+ALTER TABLE ONLY public.buyers ALTER COLUMN id SET DEFAULT nextval('public.buyers_id_seq'::regclass);
+
+
+--
+-- Name: producers id; Type: DEFAULT; Schema: public; Owner: vari
+--
+
+ALTER TABLE ONLY public.producers ALTER COLUMN id SET DEFAULT nextval('public.producers_id_seq'::regclass);
+
+
+--
+-- Name: sales id; Type: DEFAULT; Schema: public; Owner: vari
+--
+
+ALTER TABLE ONLY public.sales ALTER COLUMN id SET DEFAULT nextval('public.sales_id_seq'::regclass);
+
+
+--
+-- Data for Name: alembic_version; Type: TABLE DATA; Schema: public; Owner: vari
+--
+
+COPY public.alembic_version (version_num) FROM stdin;
+e3d690e1be1b
+\.
+
+
+--
+-- Data for Name: buyers; Type: TABLE DATA; Schema: public; Owner: vari
+--
+
+COPY public.buyers (id, name, comercialized_products) FROM stdin;
+1	Julio Mena	{papaya,sandia,melon}
+2	Alvaro Saborio	{miel,"tapa e dulce",melcochas,cajetas}
+\.
+
+
+--
+-- Data for Name: producers; Type: TABLE DATA; Schema: public; Owner: vari
+--
+
+COPY public.producers (id, name, country, products) FROM stdin;
+1	Jose Carrillo	Costa Rica	{Fresas,Mora,Cas}
+2	Aureliano Buendia	Colombia	{Cacao,Cafe,Platano}
+3	Mauricio Cordoba	Guatemala	{Aguacate,Lentejas}
+4	Carlos Rivera	Salvador	{Guayaba,Guanabana}
+5	Josue Caldera	Panama	{Banano,Carbon}
+\.
+
+
+--
+-- Data for Name: sales; Type: TABLE DATA; Schema: public; Owner: vari
+--
+
+COPY public.sales (id, producer_id, buyer_id) FROM stdin;
+1	1	2
+2	1	1
+3	2	1
+4	2	2
+5	3	1
+6	3	2
+\.
+
+
+--
+-- Name: buyers_id_seq; Type: SEQUENCE SET; Schema: public; Owner: vari
+--
+
+SELECT pg_catalog.setval('public.buyers_id_seq', 2, true);
+
+
+--
+-- Name: producers_id_seq; Type: SEQUENCE SET; Schema: public; Owner: vari
+--
+
+SELECT pg_catalog.setval('public.producers_id_seq', 5, true);
+
+
+--
+-- Name: sales_id_seq; Type: SEQUENCE SET; Schema: public; Owner: vari
+--
+
+SELECT pg_catalog.setval('public.sales_id_seq', 6, true);
+
+
+--
+-- Name: alembic_version alembic_version_pkc; Type: CONSTRAINT; Schema: public; Owner: vari
+--
+
+ALTER TABLE ONLY public.alembic_version
+    ADD CONSTRAINT alembic_version_pkc PRIMARY KEY (version_num);
+
+
+--
+-- Name: buyers buyers_pkey; Type: CONSTRAINT; Schema: public; Owner: vari
+--
+
+ALTER TABLE ONLY public.buyers
+    ADD CONSTRAINT buyers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: producers producers_pkey; Type: CONSTRAINT; Schema: public; Owner: vari
+--
+
+ALTER TABLE ONLY public.producers
+    ADD CONSTRAINT producers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: sales sales_pkey; Type: CONSTRAINT; Schema: public; Owner: vari
+--
+
+ALTER TABLE ONLY public.sales
+    ADD CONSTRAINT sales_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: sales sales_buyer_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: vari
+--
+
+ALTER TABLE ONLY public.sales
+    ADD CONSTRAINT sales_buyer_id_fkey FOREIGN KEY (buyer_id) REFERENCES public.buyers(id);
+
+
+--
+-- Name: sales sales_producer_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: vari
+--
+
+ALTER TABLE ONLY public.sales
+    ADD CONSTRAINT sales_producer_id_fkey FOREIGN KEY (producer_id) REFERENCES public.producers(id);
+
+
+--
+-- PostgreSQL database dump complete
+--
+
